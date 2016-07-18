@@ -175,13 +175,28 @@ def player_numbers(team_name)
 end
 
 def player_stats(player)
-  game_hash.map do |location, team|
-    team[:players].each do |attribute, value|
-      binding.pry
-      player[attribute]
-    end
-  end
+  all_players = get_all_players
+  all_players[player]
 end
 
 
+def get_all_players
+  game_hash[:home][:players].merge(game_hash[:away][:players])
+end
+
+
+def big_shoe_rebounds
+  all_players = get_all_players
+  max_shoe = 0
+  player_with_max_shoe = ""
+
+  all_players.each do |player_name, player_stats|
+    if player_stats[:shoe] > max_shoe
+      max_shoe = player_stats[:shoe]
+      player_with_max_shoe = player_name
+    end
+  end
+
+  all_players[player_with_max_shoe][:rebounds]
+end
 
